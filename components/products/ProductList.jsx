@@ -1,0 +1,40 @@
+import { ActivityIndicator, FlatList, Text, View } from "react-native";
+import React from "react";
+import useFetch from "../../hook/useFetch";
+import { COLORS, SIZES } from "../../constants";
+import styles from "./productsList.style";
+import ProductCard from "./ProductCard";
+
+const ProductList = ({favourites = false}) => {
+  const { data, isLoading, error, refetch } = useFetch();
+  
+  const renderFavoruiteItems = ()=>{
+    const filteredData = data.filter((eachItem) => eachItem.like === true);
+
+  return filteredData;
+  }
+
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size={SIZES.xxLarge} color={COLORS.primary} />
+      </View>
+    );
+  } else if (error) {
+    return <Text>SomeThing Went Wrong</Text>;
+  } else {
+    return (
+      <View style={styles.container}>
+        <FlatList
+          data={favourites ? renderFavoruiteItems() :data}
+          numColumns={2}
+          renderItem={({ item }) => <ProductCard product={item} />}
+          contentContainerStyle={styles.container}
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
+        />
+      </View>
+    );
+  }
+};
+
+export default ProductList;

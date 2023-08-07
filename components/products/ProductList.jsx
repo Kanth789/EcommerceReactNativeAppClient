@@ -21,7 +21,24 @@ const ProductList = ({favourites = false}) => {
       </View>
     );
   } else if (error) {
-    return <Text>SomeThing Went Wrong</Text>;
+    return <View>
+    <Text
+      style={{
+        color: COLORS.primary,
+        fontFamily: "bold",
+        fontSize: SIZES.small,
+      }}
+      numberOfLines={1}
+    >{error}</Text>
+    <Image
+      source={{ uri: "https://i.ibb.co/g751J7m/404-Error-HD.png" }}
+      style={{
+        width: SIZES.width,
+        height: SIZES.height / 2,
+        marginVertical: 30,
+      }}
+    />
+  </View>
   } else {
     return (
       <View style={styles.container}>

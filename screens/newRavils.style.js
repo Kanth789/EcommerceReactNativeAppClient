@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     zIndex: 99999,
   },
   heading: {
-    fontFamily: "semiBold",
+    fontFamily: "bold",
     fontSize: SIZES.medium,
     color: COLORS.white,
     marginLeft: 5,

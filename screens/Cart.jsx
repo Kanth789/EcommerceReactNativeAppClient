@@ -10,16 +10,18 @@ import {
 import React, { useState, useEffect } from "react";
 import styles from "./cart.style";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
-import { COLORS } from "../constants";
+import { COLORS, SIZES } from "../constants";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Cart = ({ navigation }) => {
   const [cartProducts, setCartProducts] = useState([]);
   const [loader, setLoader] = useState(false);
-  const[reload,setReload] = useState(false)
+  const [reload, setReload] = useState(false);
 
   const getCartProducts = async () => {
+    setLoader(true);
     try {
       const id = await AsyncStorage.getItem("id");
       const userId = JSON.parse(id);
@@ -27,7 +29,7 @@ const Cart = ({ navigation }) => {
       const response = await axios.get(endPoint);
       if (response.status === 200) {
         setCartProducts(response.data[0].products);
-        setLoader(true);
+        setLoader(false);
       } else {
         Alert.alert("Error", "Something went wrong", [
           {
@@ -41,7 +43,28 @@ const Cart = ({ navigation }) => {
         ]);
       }
     } catch (error) {
-      console.error("Error fetching cart products:", error);
+      return (
+        <View>
+          <Text
+            style={{
+              color: COLORS.primary,
+              fontFamily: "bold",
+              fontSize: SIZES.small,
+            }}
+            numberOfLines={1}
+          >{error.message}</Text>
+          <Image
+            source={{ uri: "https://i.ibb.co/g751J7m/404-Error-HD.png" }}
+            style={{
+              width: SIZES.width,
+              height: SIZES.height / 2,
+              marginVertical: 30,
+            }}
+          />
+        </View>
+      );
+    } finally {
+      setLoader(false);
     }
   };
 
@@ -50,7 +73,6 @@ const Cart = ({ navigation }) => {
       const endPoint = `https://ecommercereactnativebackend.onrender.com/api/carts/${value}`;
       const response = await axios.delete(endPoint);
       if (response.status === 200) {
-        // Filter out the deleted product from the cartProducts array
         const updatedCartProducts = cartProducts.filter(
           (item) => item._id !== value
         );
@@ -78,21 +100,36 @@ const Cart = ({ navigation }) => {
         ]);
       }
     } catch (error) {
-      console.error("Error deleting product from cart:", error);
+      <View>
+          <Text
+            style={{
+              color: COLORS.primary,
+              fontFamily: "bold",
+              fontSize: SIZES.small,
+            }}
+            numberOfLines={1}
+          >{error}</Text>
+          <Image
+            source={{ uri: "https://i.ibb.co/g751J7m/404-Error-HD.png" }}
+            style={{
+              width: SIZES.width,
+              height: SIZES.height / 2,
+              marginVertical: 30,
+            }}
+          />
+        </View>
     }
-  }
+  };
 
   useEffect(() => {
     getCartProducts();
   }, []);
 
- 
-
   const renderTheCardItem = (products) => {
     return (
-      <View>
-        {products.map((eachItem) =>
-          renderTheCardData(eachItem.cartItem, eachItem.quantity, eachItem._id)
+      <View >
+        {products.map((eachItem,index) =>
+          renderTheCardData(eachItem.cartItem, eachItem.quantity, eachItem._id,index)
         )}
       </View>
     );
@@ -106,9 +143,9 @@ const Cart = ({ navigation }) => {
     return total;
   };
 
-  const renderTheCardData = (values, quantity, cartId) => {
+  const renderTheCardData = (values, quantity, cartId,index) => {
     return (
-      <View style={styles.prodcutsWrapper}>
+      <View style={styles.prodcutsWrapper} key={index}>
         <ScrollView>
           <View key={values._id}>
             <TouchableOpacity
@@ -139,7 +176,6 @@ const Cart = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </ScrollView>
-        
       </View>
     );
   };
@@ -168,38 +204,65 @@ const Cart = ({ navigation }) => {
 
   const renderHeaderAndCarts = (cartProducts) => {
     const totalAmount = calculateTotalCount();
-  
+    const handleCheckout = () => {
+      navigation.navigate("Orders", { cartProducts }); 
+    };
     return (
-      <View>
+      <SafeAreaView>
+      <View style={{marginTop:10}}>
         {renderHeader()}
-        {cartProducts && cartProducts.length > 0
-          ? (
-            <>
-              {renderTheCardItem(cartProducts)}
-              <View style={styles.checkOutButton}>
-                <TouchableOpacity onPress={() => {}}>
-                  <Text style={styles.checkoutBtn}>
-                    C H E C K O U T ${totalAmount}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </>
-          )
-          : renderEmptyCardView()}
+        {cartProducts && cartProducts.length > 0 ? (
+          <>
+            {renderTheCardItem(cartProducts)}
+            <View style={styles.checkOutButton}>
+              <TouchableOpacity onPress={handleCheckout}>
+                <Text style={styles.checkoutBtn}>
+                  C H E C K O U T ${totalAmount}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </>
+        ) : (
+          renderEmptyCardView()
+        )}
+      </View>
+      </SafeAreaView>
+    );
+  };
+
+  const renderEmptyCardView = () => {
+    return (
+      <View
+        style={{
+          margin: 20,
+          padding: 40,
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Text
+          style={{
+            fontFamily: "regular",
+            fontSize: SIZES.small,
+            color: COLORS.primary,
+          }}
+        >
+          No Items in The Cart
+        </Text>
+        <Image
+          source={{ uri: "https://i.ibb.co/HgF6yCd/Trolley-HD.png" }}
+          style={{
+            width: SIZES.width,
+            height: SIZES.height / 2,
+            resizeMode: "contain",
+          }}
+        />
       </View>
     );
   };
-  
 
-  const renderEmptyCardView = ()=>{
-    return(
-      <View>
-        <Text>No Items in The Cart</Text>
-      </View>
-    )
-  }
-
-  return loader === true
+  return loader !== true
     ? renderHeaderAndCarts(cartProducts)
     : renderTheActivityIndicator();
 };

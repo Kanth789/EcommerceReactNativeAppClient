@@ -11,6 +11,7 @@ import { COLORS, SIZES } from "../constants";
 import { useRoute } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const ProductDetails = ({ navigation }) => {
   const route = useRoute();
@@ -44,16 +45,7 @@ const ProductDetails = ({ navigation }) => {
       },
     });
     if (response.status === 200) {
-      Alert.alert("Success", "Product added to the cart Successfull", [
-        {
-          text: "Cancel",
-          onPress: () => {},
-        },
-        {
-          text: "Continue",
-          onPress: () => {},
-        },
-      ]);
+      <Toast statusCode={response.status} messsage={error.message}/>
     } else {
       Alert.alert("err", "Something went wrong", [
         {
@@ -86,6 +78,7 @@ const ProductDetails = ({ navigation }) => {
   };
 
   return (
+    <SafeAreaView >
     <View style={styles.container}>
       <View style={styles.upperRow}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -156,6 +149,7 @@ const ProductDetails = ({ navigation }) => {
         </View>
       </View>
     </View>
+    </SafeAreaView>
   );
 };
 

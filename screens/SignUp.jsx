@@ -16,6 +16,7 @@ import * as Yup from "yup";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
 import axios from "axios";
+import Toast from "./Toast";
 
 const SignUp = ({ navigation }) => {
   const [loader, setLoader] = useState(false);
@@ -47,31 +48,45 @@ const SignUp = ({ navigation }) => {
     ]);
   };
 
-  const registerUser = async(values)=>{
-    setLoader(true)
+  const registerUser = async (values) => {
+    console.log(values)
+    setLoader(true);
+ 
+    try {
+      const endPoint =
+        "https://ecommercereactnativebackend.onrender.com/api/register";
+      const data = values;
+      const response = await axios.post(endPoint, data);
+      if (response.status === 200) {
+        Alert.alert("Success", "Registration successful!", [
+          {
+            text: "OK",
+            onPress: () => {
+              setLoader(false);
+              navigation.replace("LoginPage");
+            },
+          },
+        ]);
+      
 
-    try{
-      const endPoint = 'https://ecommercereactnativebackend.onrender.com/api/register'
-      const data = values
-      const response = await axios.post(endPoint,values)
-      if(response.status === 201)
-      {
-        navigation.replace('LoginPage')
       }
-    }catch(error){
-      console.log(error)
+    } catch (error) {
+      return(
+        <Toast statusCode={error.status} messsage={error.message}/>
+      )
     }
-  }
+  };
 
   return (
     <ScrollView>
-      <SafeAreaView style={{ marginHorizontal: 20 }}>
+      <SafeAreaView >
         <View>
           <Backbtn OnPress={() => navigation.goBack()} />
           <Image
-            source={require("../assets/images/bk.png")}
+            source={require("../assets/images/login1.jpg")}
             style={styles.cover}
           />
+          <View style={{marginHorizontal:20}}>
           <Text style={styles.title}>Fashion</Text>
 
           <Formik
@@ -82,7 +97,7 @@ const SignUp = ({ navigation }) => {
               location: "",
             }}
             validationSchema={validationSchema}
-            onSubmit={() => registerUser(values)}
+            onSubmit={(values) => registerUser(values)}
           >
             {({
               handleChange,
@@ -123,12 +138,16 @@ const SignUp = ({ navigation }) => {
                       style={{ flex: 1 }}
                     />
                   </View>
-                  {touched.username && errors.username && (
-                    <Text style={styles.errorMessage}>{errors.username}</Text>
-                  )}
+                  <View>
+                    {touched.username && errors.username && (
+                      <Text style={styles.errorMessage}>{errors.username}</Text>
+                    )}
+                  </View>
                 </View>
                 <View style={styles.wrapper}>
-                  <Text style={styles.label}>Email</Text>
+                  <View>
+                    <Text style={styles.label}>Email</Text>
+                  </View>
                   <View
                     style={styles.textInputWrapper(
                       touched.email ? COLORS.secondary : COLORS.offwhite
@@ -140,6 +159,7 @@ const SignUp = ({ navigation }) => {
                       color={COLORS.gray}
                       style={styles.iconStyle}
                     />
+                    <View>
                     <TextInput
                       placeholder="Enter The Email"
                       onFocus={() => {
@@ -154,13 +174,20 @@ const SignUp = ({ navigation }) => {
                       autoCorrect={false}
                       style={{ flex: 1 }}
                     />
+                    </View>
                   </View>
+
+                  <View>
                   {touched.email && errors.email && (
-                    <Text style={styles.errorMessage}>{errors.email}</Text>
-                  )}
+                      
+                      <Text style={styles.errorMessage}>{errors.email}</Text>
+                      )}
+                      </View>
                 </View>
                 <View style={styles.wrapper}>
-                  <Text style={styles.label}>Password</Text>
+                  <View>
+                    <Text style={styles.label}>Password</Text>
+                  </View>
                   <View
                     style={styles.textInputWrapper(
                       touched.password ? COLORS.secondary : COLORS.offwhite
@@ -198,13 +225,17 @@ const SignUp = ({ navigation }) => {
                       />
                     </TouchableOpacity>
                   </View>
+                  <View>
                   {touched.password && errors.password && (
-                    <Text style={styles.errorMessage}>{errors.password}</Text>
-                  )}
+                      <Text style={styles.errorMessage}>{errors.password}</Text>
+                      )}
+                      </View>
                 </View>
 
                 <View style={styles.wrapper}>
-                  <Text style={styles.label}>Location</Text>
+                  <View>
+                    <Text style={styles.label}>Location</Text>
+                  </View>
                   <View
                     style={styles.textInputWrapper(
                       touched.location ? COLORS.secondary : COLORS.offwhite
@@ -231,9 +262,15 @@ const SignUp = ({ navigation }) => {
                       style={{ flex: 1 }}
                     />
                   </View>
+
+                  <View>
                   {touched.location && errors.location && (
-                    <Text style={styles.errorMessage}>{errors.location}</Text>
+                      
+                      <Text style={styles.errorMessage}>
+                        {errors.location}
+                      </Text>
                   )}
+                  </View>
                 </View>
 
                 <Button
@@ -244,15 +281,18 @@ const SignUp = ({ navigation }) => {
                   isValid={isValid}
                   loader={loader}
                 />
-                <Text
-                  style={styles.registartion}
-                  onPress={() => navigation.navigate("LoginPage")}
-                >
-                  Login
-                </Text>
+                <View>
+                  <Text
+                    style={styles.registartion}
+                    onPress={() => navigation.navigate("LoginPage")}
+                  >
+                    Login
+                  </Text>
+                </View>
               </View>
             )}
           </Formik>
+          </View>
         </View>
       </SafeAreaView>
     </ScrollView>
@@ -263,9 +303,9 @@ export default SignUp;
 
 const styles = StyleSheet.create({
   cover: {
-    height: SIZES.height / 4,
-    width: SIZES.width - 60,
-    resizeMode: "contain",
+    height: SIZES.height / 2.5,
+    width: SIZES.width,
+    resizeMode: "cover",
     marginBottom: SIZES.xxLarge,
   },
   title: {

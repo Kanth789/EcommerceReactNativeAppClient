@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Alert } from "react-native";
+import { View, Text, TouchableOpacity, Alert, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "./profile.style";
@@ -10,6 +10,7 @@ import {
   AntDesign,
   MaterialCommunityIcons,
   SimpleLineIcons,
+  Feather,
 } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
@@ -105,12 +106,13 @@ const Profile = ({ navigation }) => {
     ]);
   };
   return (
+    <ScrollView>
     <View style={styles.container}>
       <View style={styles.container}>
         <StatusBar backgroundColor={COLORS.gray} />
         <View style={{ width: "100%" }}>
           <Image
-            source={require("../assets/images/space.jpg")}
+            source={require("../assets/images/login1.jpg")}
             style={styles.cover}
           />
         </View>
@@ -148,27 +150,21 @@ const Profile = ({ navigation }) => {
                     name="heart-outline"
                     size={24}
                     color={COLORS.primary}
+                    style={{marginRight:10}}
                   />
                   <Text style={styles.menuText}>Favorites</Text>
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => navigation.navigate("Orders")}>
+              <TouchableOpacity onPress={() => navigation.navigate("Orders",[])}>
                 <View style={styles.menuItem(0.2)}>
-                  <Ionicons
-                    name="truk-delivery-outline"
-                    size={24}
-                    color={COLORS.primary}
-                  />
+                 
+                  <MaterialCommunityIcons name="truck-delivery-outline" size={24}  color={COLORS.primary} style={{marginRight:10}}/>
                   <Text style={styles.menuText}>Orders</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => navigation.navigate("Cart")}>
                 <View style={styles.menuItem(0.2)}>
-                  <SimpleLineIcons
-                    name="bag"
-                    size={24}
-                    color={COLORS.primary}
-                  />
+                  <Feather name="shopping-bag" size={24} color={COLORS.primary} style={{marginRight:10}}/>
                   <Text style={styles.menuText}>Cart</Text>
                 </View>
               </TouchableOpacity>
@@ -177,6 +173,7 @@ const Profile = ({ navigation }) => {
                   <MaterialCommunityIcons
                     name="cached"
                     size={24}
+                    style={{marginRight:10}}
                     color={COLORS.primary}
                   />
                   <Text style={styles.menuText}>Clear Cache</Text>
@@ -184,17 +181,13 @@ const Profile = ({ navigation }) => {
               </TouchableOpacity>
               <TouchableOpacity onPress={() => deleteAlert()}>
                 <View style={styles.menuItem(0.2)}>
-                  <AntDesign
-                    name="deleteUser"
-                    size={24}
-                    color={COLORS.primary}
-                  />
+                  <AntDesign name="deleteuser" size={24} color={COLORS.primary} style={{marginRight:10}}/>
                   <Text style={styles.menuText}>Delete Account</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity onPress={() => logOut()}>
                 <View style={styles.menuItem(0.2)}>
-                  <AntDesign name="logOut" size={24} color={COLORS.primary} />
+                <AntDesign name="logout" size={24} color={COLORS.primary} style={{marginRight:10}}/>
                   <Text style={styles.menuText}>LogOut</Text>
                 </View>
               </TouchableOpacity>
@@ -203,6 +196,7 @@ const Profile = ({ navigation }) => {
         </View>
       </View>
     </View>
+    </ScrollView>
   );
 };
 

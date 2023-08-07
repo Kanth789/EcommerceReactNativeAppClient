@@ -9,10 +9,12 @@ import Carousel from "../components/home/Carousel";
 import Heading from "../components/home/Heading";
 import ProductRow from "../components/products/ProductRow";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ActivityIndicator } from "react-native";
 
 const Home = ({ navigation }) => {
   const [userData, setUserData] = useState(null);
   const [userLogin, setUserLogin] = useState(false);
+  const [loader,setLoder] = useState(true)
   useEffect(() => {
     checkExisitingUser();
   }, []);
@@ -22,10 +24,12 @@ const Home = ({ navigation }) => {
     try {
       const currentUser = await AsyncStorage.getItem(userId);
       if (currentUser !== null) {
+        setLoder(false)
         const parseData = JSON.parse(currentUser);
         setUserData(parseData);
         setUserLogin(true);
       } else {
+        setLoder(false)
         navigation.navigate("LoginPage");
       }
     } catch (err) {
@@ -34,6 +38,9 @@ const Home = ({ navigation }) => {
   };
   return (
     <SafeAreaView>
+      <ScrollView>
+     { loader ? <ActivityIndicator/> 
+      : <View>
       <View style={styles.appBarWrapper}>
         <View style={styles.appBar}>
           <Ionicons name="location-outline" size={24} />
@@ -50,11 +57,11 @@ const Home = ({ navigation }) => {
           </View>
         </View>
       </View>
-      <ScrollView>
         <Welcome />
         <Carousel />
         <Heading />
         <ProductRow />
+      </View> }
       </ScrollView>
     </SafeAreaView>
   );

@@ -17,7 +17,8 @@ const styles = StyleSheet.create({
   header:{
     flexDirection:'row',
     alignItems:'center',
-    paddingVertical:7
+    paddingVertical:7,
+    marginHorizontal:10
   },
   chervonWrapper:{
     marginRight:8
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
   },
   supplier: {
     fontSize: SIZES.small + 2,
-    fontFamily: "semiBold",
+    fontFamily: "bold",
     color: COLORS.gray,
     marginTop: 3,
   },
@@ -73,14 +74,15 @@ const styles = StyleSheet.create({
   },
   checkoutBtn:{
     color:COLORS.white,
-    fontFamily:'semiBold',
+    fontFamily:'bold',
     fontSize:SIZES.small +2,
     padding:4,
     textAlign: "center"
 
   },
   prodcutsWrapper:{
-    paddingHorizontal:10
+    paddingHorizontal:10,
+    marginTop:10
   },
   cartText:{
     fontFamily:'regular',

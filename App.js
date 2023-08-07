@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { useFonts } from "expo-font";
+import { Expo } from "expo";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useState } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -11,6 +12,7 @@ import {
   Favourites,
   LoginPage,
   NewRavils,
+  OnboardingScreen,
   Order,
   ProductDetails,
   SignUp,
@@ -24,17 +26,17 @@ export default function App() {
     light: require("./assets/fonts/Poppins-Light.ttf"),
     medium: require("./assets/fonts/Poppins-Medium.ttf"),
     bold: require("./assets/fonts/Poppins-Bold.ttf"),
-    semiBold: require("./assets/fonts/Poppins-SemiBold.ttf"),
     extraBold: require("./assets/fonts/Poppins-ExtraBold.ttf"),
+    Ionicons: require("./assets/fonts/Ionicons.ttf"),
+    AntDesign: require("./assets/fonts/AntDesign.ttf"),
+    Ionicons: require("./assets/fonts/Ionicons.ttf"),
+    Feather: require("./assets/fonts/Feather.ttf"),
+    FontAwesome: require("./assets/fonts/FontAwesome.ttf"),
+    MaterialCommunityIcons: require("./assets/fonts/MaterialCommunityIcons.ttf"),
+    Fontisto: require("./assets/fonts/Fontisto.ttf"),
+    SimpleLineIcons: require("./assets/fonts/SimpleLineIcons.ttf"),
   });
-
-  // Font.loadAsync({
-  //   // This is the font that we're using for our tab bar
-  //   ...Icon.MaterialIcons.font,
-  //   ...Icon.MaterialCommunityIcons.font,
-  //   ...Icon.FontAwesome.font,
-  //   ...Icon.Feather.font,
-  // })
+  
 
   const onLayoutRootView = useCallback(async () => {
     if (fontloadedArray) {
@@ -54,7 +56,7 @@ export default function App() {
           component={ButtonTabNavigation}
           options={{ headerShown: false }}
         ></Stack.Screen>
-        
+
         <Stack.Screen
           name="Cart"
           component={Cart}
@@ -90,6 +92,12 @@ export default function App() {
           component={SignUp}
           options={{ headerShown: false }}
         ></Stack.Screen>
+        <Stack.Screen
+         name="OnboardingScreen"
+         component={OnboardingScreen}
+         options={{headerShown:false}}
+         >
+        </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

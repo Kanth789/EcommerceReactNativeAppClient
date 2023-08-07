@@ -21,7 +21,9 @@ const Favourites = ({navigation}) => {
         </TouchableOpacity>
         <Text style={styles.heading}>Favourites</Text>
       </View>
+      <View style={{marginTop:10}}>
       <ProductList favourites={true}/>
+      </View>
     </View>
   </SafeAreaView>
   );

@@ -8,7 +8,8 @@ import LoginPage from "./LoginPage";
 import Favourites from "./Favourites";
 import Order from "./Order";
 import SignUp from "./SignUp";
-
+import OnboardingScreen from './OnboardingScreens'
+import Toast from './Toast'
 export {
   Home,
   Profile,
@@ -20,4 +21,6 @@ export {
   Favourites,
   Order,
   SignUp,
+  OnboardingScreen,
+  Toast
 };

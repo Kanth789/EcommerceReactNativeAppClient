@@ -3,8 +3,8 @@ import { COLORS, SIZES } from "../constants";
 const styles = StyleSheet.create({
   cover: {
     height: SIZES.height / 2.4,
-    width: SIZES.width - 60,
-    resizeMode: "contain",
+    width: SIZES.width,
+    resizeMode: "cover",
     marginBottom: SIZES.xxLarge,
   },
   title: {

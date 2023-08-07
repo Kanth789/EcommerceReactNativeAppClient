@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
-import { Ionicons } from "@expo/vector-icons";
+import  Ionicons  from "@expo/vector-icons/Ionicons";
 import { COLORS, SIZES } from "../constants";
 const Backbtn = ({ OnPress }) => {
   return (
@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: "absolute",
     zIndex: 999,
-    top: SIZES.large - 10,
+    top: SIZES.large +20,
+    marginHorizontal:20
   },
 });

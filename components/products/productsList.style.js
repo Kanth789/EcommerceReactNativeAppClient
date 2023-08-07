@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
   },
   container: {
     alignItems: "center",
-    paddingTop: SIZES.Large,
+    paddingTop: SIZES.large,
     paddingLeft: SIZES.small / 2,
   },
   separator: {

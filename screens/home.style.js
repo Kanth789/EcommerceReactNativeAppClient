@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
   appBarWrapper: {
     marginHorizontal: 22,
     marginTop: SIZES.small,
+    
   },
   appBar: {
     flexDirection: "row",
@@ -16,7 +17,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   location: {
-    fontFamily: "semiBold",
+    fontFamily: "bold",
     fontSize: SIZES.medium,
     color: COLORS.gray,
   },

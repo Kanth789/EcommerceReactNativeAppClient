@@ -4,7 +4,7 @@ import { COLORS, SIZES } from "../constants";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.lightWhite,
+    backgroundColor: COLORS.gray2
   },
   wrapper: {
     flex: 1,
@@ -15,9 +15,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
+    marginTop:10
   },
   heading: {
-    fontFamily: "semiBold",
+    fontFamily: "bold",
     fontSize: SIZES.medium,
     color: COLORS.primary,
     marginLeft: 5,

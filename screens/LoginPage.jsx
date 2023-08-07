@@ -14,7 +14,7 @@ import { Backbtn, Button } from "../components";
 import styles from "./loginPage.style";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import  MaterialCommunityIcons  from "@expo/vector-icons/MaterialCommunityIcons";
 import { COLORS } from "../constants";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -45,6 +45,7 @@ const LoginPage = ({ navigation }) => {
   };
 
   const login = async (values) => {
+   
     setLoader(true);
     try {
       const endPoint = "https://ecommercereactnativebackend.onrender.com/api/login";
@@ -56,16 +57,16 @@ const LoginPage = ({ navigation }) => {
       });
       
       if (response.status === 200) {
-        setLoader(false);
         setResponseData(response.data);
-
+        
         await AsyncStorage.setItem(
           `user${responseData._id}`,
           JSON.stringify(responseData)
-        );
-        
-        await AsyncStorage.setItem("id", JSON.stringify(responseData._id));
-        navigation.replace("BottomNavigation");
+          );
+          
+          await AsyncStorage.setItem("id", JSON.stringify(responseData._id));
+          setLoader(false);
+        navigation.replace("OnboardingScreen"); 
       } else {
         Alert.alert("err", "please enter the required fields", [
           {
@@ -78,8 +79,13 @@ const LoginPage = ({ navigation }) => {
           },
         ]);
       }
-    } catch (error) {
-      Alert.alert("err", { error }, [
+    }catch (error) {
+      const errorMessage =
+        error.response && error.response.data && error.response.data.message
+          ? error.response.data.message
+          : "An error occurred. Please try again later.";
+      
+      Alert.alert("Error", errorMessage, [
         {
           text: "Cancel",
           onPress: () => {},
@@ -89,22 +95,22 @@ const LoginPage = ({ navigation }) => {
           onPress: () => {},
         },
       ]);
-    } finally {
-      setLoader(false);
     }
   };
-
+  
+  
   return (
+      <SafeAreaView >
     <ScrollView>
-      <SafeAreaView style={{ marginHorizontal: 20 }}>
         <View>
-          <Backbtn OnPress={() => navigation.goBack()} />
+          {responseData ? <Backbtn OnPress={() => navigation.goBack()} /> : ''}
           <Image
-            source={require("../assets/images/bk.png")}
+            source={require("../assets/images/login.jpg")}
             style={styles.cover}
           />
+          <View style={{marginHorizontal:20}}>
           <Text style={styles.title}>Fashion</Text>
-
+          
           <Formik
             initialValues={{ email: "", password: "" }}
             validationSchema={validationSchema}
@@ -218,9 +224,10 @@ const LoginPage = ({ navigation }) => {
               </View>
             )}
           </Formik>
+          </View>
         </View>
-      </SafeAreaView>
     </ScrollView>
+      </SafeAreaView>
   );
 };
 

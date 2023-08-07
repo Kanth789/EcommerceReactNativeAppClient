@@ -18,7 +18,8 @@ const styles = StyleSheet.create({
   },
   image: {
     aspectRatio: 1,
-    resizeMode: "cover",
+    resizeMode: "contain",
+    
   },
   details: {
     marginTop: -SIZES.large,
@@ -77,14 +78,14 @@ const styles = StyleSheet.create({
     fontSize: SIZES.large,
   },
   cartTitle: {
-    fontFamily: "semiBold",
+    fontFamily: "bold",
     fontSize: SIZES.medium,
     color: COLORS.lightWhite,
     marginLeft: SIZES.small,
   },
   price: {
     paddingHorizontal: 10,
-    fontFamily: "semiBold",
+    fontFamily: "bold",
     fontSize: SIZES.large,
   },
   priceWrapper: {

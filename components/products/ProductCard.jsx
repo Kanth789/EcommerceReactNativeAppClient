@@ -70,7 +70,7 @@ const ProductCard = ({ product }) => {
     >
       <View style={styles.container}>
         <View style={styles.imageContainer}>
-          <Image source={product.imageUrl} style={styles.image} />
+          <Image source={{uri:product.imageUrl}} style={styles.image} />
         </View>
         <View style={styles.details}>
           <Text style={styles.title} numberOfLines={1}>

@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   },
   supplier: {
     fontSize: SIZES.small + 2,
-    fontFamily: "semiBold",
+    fontFamily: "bold",
     color: COLORS.gray,
     marginTop: 3,
   },

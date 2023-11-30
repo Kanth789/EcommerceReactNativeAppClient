@@ -23,6 +23,9 @@ const styles = StyleSheet.create({
     marginRight: SIZES.small,
     borderRadius: SIZES.small,
   },
+  search:{
+margin:11
+  },
   searchInput: {
     fontFamily: "regular",
     width: "100%",

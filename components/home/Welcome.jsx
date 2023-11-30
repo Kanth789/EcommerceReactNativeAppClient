@@ -4,14 +4,20 @@ import styles from "./welcome.style";
 import { COLORS, SIZES } from "../../constants";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
+import { Searchbar } from "react-native-paper";
 
 export const Welcome = () => {
   const navigation = useNavigation();
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const onChangeSearch = (query) => setSearchQuery(query);
 
   const navigationToSearch = () => {
-    console.log("called");
     navigation.navigate("Search");
   };
+
+  
   return (
     <View>
       <View style={styles.container}>
@@ -24,28 +30,14 @@ export const Welcome = () => {
           Luxurious Fashion
         </Text>
       </View>
-      <View style={styles.searchContainer}>
-        <TouchableOpacity>
-          <Feather name="search" size={24} style={styles.searchItem} />
-        </TouchableOpacity>
-        <View style={styles.searchWrapper}>
-          <TouchableOpacity onPress={navigationToSearch}>
-            <TextInput
-              placeholder="What are you looking for..."
-              value=""
-              style={styles.searchInput}
-            />
-          </TouchableOpacity>
-        </View>
-        <View>
-          <TouchableOpacity style={styles.searchBtn}>
-            <Ionicons
-              name="camera-outline"
-              size={SIZES.xLarge}
-              color={COLORS.white}
-            />
-          </TouchableOpacity>
-        </View>
+      
+      <View style={styles.search}>
+        <Searchbar
+          placeholder="Search"
+          onChangeText={onChangeSearch}
+          value={searchQuery}
+          style={COLORS.secondary}
+        />
       </View>
     </View>
   );

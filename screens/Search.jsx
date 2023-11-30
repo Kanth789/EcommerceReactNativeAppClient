@@ -14,10 +14,14 @@ import { COLORS, SIZES } from "../constants";
 import axios from "axios";
 import { ProductCard } from "../components";
 import SearchCard from "../components/products/SearchCard";
+import { Searchbar } from "react-native-paper";
 
 const Search = ({ navigation }) => {
   const [searchText, setSearchText] = useState("");
   const [searchResult, setSearchResults] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const onChangeSearch = (query) => setSearchQuery(query);
   const [error, setError] = useState("");
   const handleSearch = async () => {
     try {
@@ -60,6 +64,14 @@ const Search = ({ navigation }) => {
             <Feather name="search" size={24} color={COLORS.offwhite} />
           </TouchableOpacity>
         </View>
+      </View>
+      <View style={styles.search}>
+        <Searchbar
+          placeholder="Search"
+          onChangeText={onChangeSearch}
+          value={searchQuery}
+          style={COLORS.secondary}
+        />
       </View>
       {searchResult.length === 0 || searchText.length === 0 ? (
         <View style={{ flex: 1 }}>

@@ -16,7 +16,13 @@ import {
   Order,
   ProductDetails,
   SignUp,
+  AdminPanel,
+  AddProducts,
+  DeliverdProducts,
+  AdminProducts,
 } from "./screens";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 
 const Stack = createNativeStackNavigator();
 
@@ -36,7 +42,6 @@ export default function App() {
     Fontisto: require("./assets/fonts/Fontisto.ttf"),
     SimpleLineIcons: require("./assets/fonts/SimpleLineIcons.ttf"),
   });
-  
 
   const onLayoutRootView = useCallback(async () => {
     if (fontloadedArray) {
@@ -49,6 +54,7 @@ export default function App() {
   }
 
   return (
+    <Provider store={store}>
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
@@ -93,12 +99,32 @@ export default function App() {
           options={{ headerShown: false }}
         ></Stack.Screen>
         <Stack.Screen
-         name="OnboardingScreen"
-         component={OnboardingScreen}
-         options={{headerShown:false}}
-         >
-        </Stack.Screen>
+          name="OnboardingScreen"
+          component={OnboardingScreen}
+          options={{ headerShown: false }}
+        ></Stack.Screen>
+        <Stack.Screen
+          name="AdminPanel"
+          component={AdminPanel}
+          options={{ headerShown: false }}
+        ></Stack.Screen>
+        <Stack.Screen
+          name="AddProducts"
+          component={AddProducts}
+          options={{ headerShown: false }}
+        ></Stack.Screen>
+        <Stack.Screen
+          name="DeliverdProducts"
+          component={DeliverdProducts}
+          options={{ headerShown: false }}
+        ></Stack.Screen>
+         <Stack.Screen
+          name="AdminProducts"
+          component={AdminProducts}
+          options={{ headerShown: false }}
+        ></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
+    </Provider>
   );
 }

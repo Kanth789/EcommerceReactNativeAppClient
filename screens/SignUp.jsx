@@ -16,7 +16,7 @@ import * as Yup from "yup";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
 import axios from "axios";
-import Toast from "./Toast";
+import Toast from "react-native-toast-message";
 
 const SignUp = ({ navigation }) => {
   const [loader, setLoader] = useState(false);
@@ -49,251 +49,258 @@ const SignUp = ({ navigation }) => {
   };
 
   const registerUser = async (values) => {
-    console.log(values)
+    console.log(values);
     setLoader(true);
- 
+
     try {
       const endPoint =
         "https://ecommercereactnativebackend.onrender.com/api/register";
       const data = values;
       const response = await axios.post(endPoint, data);
-      if (response.status === 200) {
-        Alert.alert("Success", "Registration successful!", [
-          {
-            text: "OK",
-            onPress: () => {
-              setLoader(false);
-              navigation.replace("LoginPage");
-            },
-          },
-        ]);
       
-
+      if (response.status === 201) {
+        Toast.show({
+          type: "success",
+          text1: "Registration successful!",
+          position: "bottom",
+          bottomOffset: 1,
+          topOffset: 0,
+        });
+        navigation.replace("LoginPage");
       }
     } catch (error) {
-      return(
-        <Toast statusCode={error.status} messsage={error.message}/>
-      )
+      return Toast.show({
+        type: "error",
+        text1: error,
+        position: "bottom",
+        bottomOffset: 1,
+        topOffset: 0,
+      });
+    } finally {
+      setLoader(false);
     }
   };
 
   return (
     <ScrollView>
-      <SafeAreaView >
+      <SafeAreaView>
         <View>
           <Backbtn OnPress={() => navigation.goBack()} />
           <Image
             source={require("../assets/images/login1.jpg")}
             style={styles.cover}
           />
-          <View style={{marginHorizontal:20}}>
-          <Text style={styles.title}>Fashion</Text>
+          <View style={{ marginHorizontal: 20 }}>
+            <Text style={styles.title}>Fashion</Text>
 
-          <Formik
-            initialValues={{
-              username: "",
-              email: "",
-              password: "",
-              location: "",
-            }}
-            validationSchema={validationSchema}
-            onSubmit={(values) => registerUser(values)}
-          >
-            {({
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              values,
-              errors,
-              isValid,
-              setFieldTouched,
-              touched,
-            }) => (
-              <View>
-                <View style={styles.wrapper}>
-                  <Text style={styles.label}>Username</Text>
-                  <View
-                    style={styles.textInputWrapper(
-                      touched.username ? COLORS.secondary : COLORS.offwhite
-                    )}
-                  >
-                    <MaterialCommunityIcons
-                      name="face-man-profile"
-                      size={20}
-                      color={COLORS.gray}
-                      style={styles.iconStyle}
-                    />
-                    <TextInput
-                      placeholder="Enter The username"
-                      onFocus={() => {
-                        setFieldTouched("username");
-                      }}
-                      onBlur={() => {
-                        setFieldTouched("username", "");
-                      }}
-                      value={values.username}
-                      onChangeText={handleChange("username")}
-                      autoCapitalize="none"
-                      autoCorrect={false}
-                      style={{ flex: 1 }}
-                    />
-                  </View>
-                  <View>
-                    {touched.username && errors.username && (
-                      <Text style={styles.errorMessage}>{errors.username}</Text>
-                    )}
-                  </View>
-                </View>
-                <View style={styles.wrapper}>
-                  <View>
-                    <Text style={styles.label}>Email</Text>
-                  </View>
-                  <View
-                    style={styles.textInputWrapper(
-                      touched.email ? COLORS.secondary : COLORS.offwhite
-                    )}
-                  >
-                    <MaterialCommunityIcons
-                      name="email-outline"
-                      size={20}
-                      color={COLORS.gray}
-                      style={styles.iconStyle}
-                    />
+            <Formik
+              initialValues={{
+                username: "",
+                email: "",
+                password: "",
+                location: "",
+              }}
+              validationSchema={validationSchema}
+              onSubmit={(values) => registerUser(values)}
+            >
+              {({
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                values,
+                errors,
+                isValid,
+                setFieldTouched,
+                touched,
+              }) => (
+                <View>
+                  <View style={styles.wrapper}>
+                    <Text style={styles.label}>Username</Text>
+                    <View
+                      style={styles.textInputWrapper(
+                        touched.username ? COLORS.secondary : COLORS.offwhite
+                      )}
+                    >
+                      <MaterialCommunityIcons
+                        name="face-man-profile"
+                        size={20}
+                        color={COLORS.gray}
+                        style={styles.iconStyle}
+                      />
+                      <TextInput
+                        placeholder="Enter The username"
+                        onFocus={() => {
+                          setFieldTouched("username");
+                        }}
+                        onBlur={() => {
+                          setFieldTouched("username", "");
+                        }}
+                        value={values.username}
+                        onChangeText={handleChange("username")}
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        style={{ flex: 1 }}
+                      />
+                    </View>
                     <View>
-                    <TextInput
-                      placeholder="Enter The Email"
-                      onFocus={() => {
-                        setFieldTouched("email");
-                      }}
-                      onBlur={() => {
-                        setFieldTouched("email", "");
-                      }}
-                      value={values.email}
-                      onChangeText={handleChange("email")}
-                      autoCapitalize="none"
-                      autoCorrect={false}
-                      style={{ flex: 1 }}
-                    />
+                      {touched.username && errors.username && (
+                        <Text style={styles.errorMessage}>
+                          {errors.username}
+                        </Text>
+                      )}
+                    </View>
+                  </View>
+                  <View style={styles.wrapper}>
+                    <View>
+                      <Text style={styles.label}>Email</Text>
+                    </View>
+                    <View
+                      style={styles.textInputWrapper(
+                        touched.email ? COLORS.secondary : COLORS.offwhite
+                      )}
+                    >
+                      <MaterialCommunityIcons
+                        name="email-outline"
+                        size={20}
+                        color={COLORS.gray}
+                        style={styles.iconStyle}
+                      />
+                      <View>
+                        <TextInput
+                          placeholder="Enter The Email"
+                          onFocus={() => {
+                            setFieldTouched("email");
+                          }}
+                          onBlur={() => {
+                            setFieldTouched("email", "");
+                          }}
+                          value={values.email}
+                          onChangeText={handleChange("email")}
+                          autoCapitalize="none"
+                          autoCorrect={false}
+                          style={{ flex: 1 }}
+                        />
+                      </View>
+                    </View>
+
+                    <View>
+                      {touched.email && errors.email && (
+                        <Text style={styles.errorMessage}>{errors.email}</Text>
+                      )}
+                    </View>
+                  </View>
+                  <View style={styles.wrapper}>
+                    <View>
+                      <Text style={styles.label}>Password</Text>
+                    </View>
+                    <View
+                      style={styles.textInputWrapper(
+                        touched.password ? COLORS.secondary : COLORS.offwhite
+                      )}
+                    >
+                      <MaterialCommunityIcons
+                        name="lock-outline"
+                        size={20}
+                        color={COLORS.gray}
+                        style={styles.iconStyle}
+                      />
+                      <TextInput
+                        placeholder="Enter The password"
+                        onFocus={() => {
+                          setFieldTouched("password");
+                        }}
+                        onBlur={() => {
+                          setFieldTouched("password", "");
+                        }}
+                        value={values.password}
+                        onChangeText={handleChange("password")}
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        style={{ flex: 1 }}
+                        secureTextEntry={obsecure}
+                      />
+                      <TouchableOpacity
+                        onPress={() => {
+                          setObsecure(!obsecure);
+                        }}
+                      >
+                        <MaterialCommunityIcons
+                          name={obsecure ? "eye-outline" : "eye-off-outline"}
+                          size={18}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                    <View>
+                      {touched.password && errors.password && (
+                        <Text style={styles.errorMessage}>
+                          {errors.password}
+                        </Text>
+                      )}
                     </View>
                   </View>
 
-                  <View>
-                  {touched.email && errors.email && (
-                      
-                      <Text style={styles.errorMessage}>{errors.email}</Text>
+                  <View style={styles.wrapper}>
+                    <View>
+                      <Text style={styles.label}>Location</Text>
+                    </View>
+                    <View
+                      style={styles.textInputWrapper(
+                        touched.location ? COLORS.secondary : COLORS.offwhite
                       )}
-                      </View>
-                </View>
-                <View style={styles.wrapper}>
-                  <View>
-                    <Text style={styles.label}>Password</Text>
-                  </View>
-                  <View
-                    style={styles.textInputWrapper(
-                      touched.password ? COLORS.secondary : COLORS.offwhite
-                    )}
-                  >
-                    <MaterialCommunityIcons
-                      name="lock-outline"
-                      size={20}
-                      color={COLORS.gray}
-                      style={styles.iconStyle}
-                    />
-                    <TextInput
-                      placeholder="Enter The password"
-                      onFocus={() => {
-                        setFieldTouched("password");
-                      }}
-                      onBlur={() => {
-                        setFieldTouched("password", "");
-                      }}
-                      value={values.password}
-                      onChangeText={handleChange("password")}
-                      autoCapitalize="none"
-                      autoCorrect={false}
-                      style={{ flex: 1 }}
-                      secureTextEntry={obsecure}
-                    />
-                    <TouchableOpacity
-                      onPress={() => {
-                        setObsecure(!obsecure);
-                      }}
                     >
-                      <MaterialCommunityIcons
-                        name={obsecure ? "eye-outline" : "eye-off-outline"}
-                        size={18}
+                      <Ionicons
+                        name="location-outline"
+                        size={20}
+                        color={COLORS.gray}
+                        style={styles.iconStyle}
                       />
-                    </TouchableOpacity>
-                  </View>
-                  <View>
-                  {touched.password && errors.password && (
-                      <Text style={styles.errorMessage}>{errors.password}</Text>
+                      <TextInput
+                        placeholder="Enter The location"
+                        onFocus={() => {
+                          setFieldTouched("location");
+                        }}
+                        onBlur={() => {
+                          setFieldTouched("location", "");
+                        }}
+                        value={values.location}
+                        onChangeText={handleChange("location")}
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        style={{ flex: 1 }}
+                      />
+                    </View>
+
+                    <View>
+                      {touched.location && errors.location && (
+                        <Text style={styles.errorMessage}>
+                          {errors.location}
+                        </Text>
                       )}
-                      </View>
-                </View>
+                    </View>
+                  </View>
 
-                <View style={styles.wrapper}>
+                  <Button
+                    title={"S I G N U P"}
+                    onPress={() => {
+                      isValid ? handleSubmit() : fillData();
+                    }}
+                    isValid={isValid}
+                    loader={loader}
+                  />
                   <View>
-                    <Text style={styles.label}>Location</Text>
-                  </View>
-                  <View
-                    style={styles.textInputWrapper(
-                      touched.location ? COLORS.secondary : COLORS.offwhite
-                    )}
-                  >
-                    <Ionicons
-                      name="location-outline"
-                      size={20}
-                      color={COLORS.gray}
-                      style={styles.iconStyle}
-                    />
-                    <TextInput
-                      placeholder="Enter The location"
-                      onFocus={() => {
-                        setFieldTouched("location");
-                      }}
-                      onBlur={() => {
-                        setFieldTouched("location", "");
-                      }}
-                      value={values.location}
-                      onChangeText={handleChange("location")}
-                      autoCapitalize="none"
-                      autoCorrect={false}
-                      style={{ flex: 1 }}
-                    />
-                  </View>
-
-                  <View>
-                  {touched.location && errors.location && (
-                      
-                      <Text style={styles.errorMessage}>
-                        {errors.location}
-                      </Text>
-                  )}
+                    <Text
+                      style={styles.registartion}
+                      onPress={() => navigation.navigate("LoginPage")}
+                    >
+                      Login
+                    </Text>
                   </View>
                 </View>
-
-                <Button
-                  title={"S I G N U P"}
-                  onPress={() => {
-                    isValid ? handleSubmit() : fillData();
-                  }}
-                  isValid={isValid}
-                  loader={loader}
-                />
-                <View>
-                  <Text
-                    style={styles.registartion}
-                    onPress={() => navigation.navigate("LoginPage")}
-                  >
-                    Login
-                  </Text>
-                </View>
-              </View>
-            )}
-          </Formik>
+              )}
+            </Formik>
           </View>
         </View>
+        <Toast />
       </SafeAreaView>
     </ScrollView>
   );
